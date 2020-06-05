@@ -2,6 +2,7 @@ import pika
 import argparse
 import os
 from dotenv import load_dotenv
+import json
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -25,7 +26,8 @@ class ValidationClient:
         self.last_messages = 0
 
     def recvMsg(self, channel: pika.channel, method, properties, body):
-        print(body)
+        output = json.loads(body)
+        print(json.dumps(output))
         self.receivedMsgs += 1
         if self.receivedMsgs == self.targetMsgs:
             if self.remove:
